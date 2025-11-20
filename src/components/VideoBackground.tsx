@@ -7,46 +7,67 @@ interface VideoBackgroundProps {
   className?: string;
 }
 
-const VideoBackground = ({ 
-  videoUrl = "https://player.vimeo.com/external/370331493.sd.mp4?s=e90dcaba73c02e63b21c14c5a7ea8a6e7d5b7b91&profile_id=164&oauth2_token_id=57447761",
+const VideoBackground = ({
+  // IMPORTANT: Replace this with your own hosted video URL (e.g., from AWS S3 or your web server)
+  videoUrl = "/background.mp4",
   posterUrl,
-  className 
+  className,
 }: VideoBackgroundProps) => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
 
+  // 1. Preload and track video readiness
   useEffect(() => {
-    // Preload video
-    const video = document.createElement('video');
-    video.src = videoUrl;
-    video.preload = 'auto';
-    
-    video.addEventListener('canplaythrough', () => {
-      setIsVideoLoaded(true);
-      setTimeout(() => setShowVideo(true), 500);
-    });
+    let video: HTMLVideoElement | undefined;
 
-    return () => {
-      video.remove();
-    };
+    // Only attempt preloading if a valid URL is provided
+    if (videoUrl) {
+      video = document.createElement("video");
+      video.src = videoUrl;
+      video.preload = "auto";
+      video.muted = true; // Essential for autoplaying
+
+      const handleCanPlay = () => {
+        setIsVideoLoaded(true);
+        // Delay showing the video slightly after it's fully ready
+        // for a smoother transition away from the poster image.
+        setTimeout(() => setShowVideo(true), 500);
+      };
+
+      video.addEventListener("canplaythrough", handleCanPlay);
+
+      return () => {
+        // Cleanup: remove the event listener and the temporary video element
+        video?.removeEventListener("canplaythrough", handleCanPlay);
+        // The temporary video element naturally gets garbage collected, but we remove it for clarity.
+      };
+    } else {
+      // Fallback for cases where no video URL is provided
+      setIsVideoLoaded(true);
+      setShowVideo(true);
+    }
   }, [videoUrl]);
 
   return (
     <div className={cn("absolute inset-0 overflow-hidden", className)}>
-      {/* Poster/Placeholder Image */}
-      <div 
+      {/* Poster/Placeholder Image/Gradient
+        This covers the video area until the video has successfully loaded.
+      */}
+      <div
         className={cn(
-          "absolute inset-0 bg-gradient-to-br from-slate-blue via-ocean-blue to-slate-blue transition-opacity duration-1000",
+          "absolute inset-0 transition-opacity duration-1000",
+          "bg-red-200", // Standard Tailwind colors used here
+          "bg-cover bg-center",
           showVideo ? "opacity-0" : "opacity-100"
         )}
         style={{
           backgroundImage: posterUrl ? `url(${posterUrl})` : undefined,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
         }}
       />
-      
-      {/* Video */}
+
+      {/* Video Element
+        Only rendered when it is loaded. Note the opacity-40 applied as a dimming effect.
+      */}
       {isVideoLoaded && (
         <video
           autoPlay
@@ -55,14 +76,16 @@ const VideoBackground = ({
           playsInline
           className={cn(
             "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000",
-            showVideo ? "opacity-40" : "opacity-0"
+            // The video is visible but dimmed
+            showVideo ? "opacity-100" : "opacity-0"
           )}
           src={videoUrl}
         />
       )}
-      
-      {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30" />
+
+      {/* Additional Gradient Overlay (Optional, for better text contrast)
+        This gradient provides extra darkness/contrast at the bottom, which is often useful. 
+      */}
     </div>
   );
 };
