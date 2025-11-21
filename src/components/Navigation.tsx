@@ -16,30 +16,43 @@ const Navigation = ({ currentSection, onNavigate }: NavigationProps) => {
 
   return (
     <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-50 animate-fade-in">
-      <div className="flex items-center gap-2 bg-background/80 backdrop-blur-xl px-6 py-4 rounded-full shadow-lg border border-border">
+      <div
+        className="
+          flex items-center gap-2
+          px-6 py-4 rounded-full
+          border border-white/20
+          bg-white/10
+          backdrop-blur-xl
+          shadow-[0_8px_20px_rgba(0,0,0,0.25)]
+        "
+      >
         {/* Logo */}
-        <div className="mr-4 flex items-center justify-center w-10 h-10">
-          <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8">
-            <path d="M12 2L12 12L2 12" stroke="hsl(var(--ocean-blue))" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M12 12L22 12L22 22" stroke="hsl(var(--ocean-blue))" strokeWidth="2" strokeLinecap="round"/>
-            <circle cx="12" cy="12" r="3" fill="hsl(var(--ocean-blue))"/>
-          </svg>
+        <div
+          onClick={() => onNavigate(0)}
+          className="mr-4 p-1 rounded-full overflow-hidden flex items-center justify-center w-10 h-10 bg-white/30 text-white font-semibold backdrop-blur-lg shadow-inner
+            /* --- Liquid Hover Animation --- */
+    /* Custom bezier for elastic 'overshoot' effect */
+    transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+    /* Scale up 'liquidly' and slightly brighten background on hover */
+    hover:scale-110 hover:bg-white/20"
+        >
+          <img src="/logo.png" alt="" />
         </div>
-        
-        {/* Nav Items */}
+
+        {/* Navigation */}
         {navItems.map(({ icon: Icon, label, section }) => (
           <button
             key={section}
             onClick={() => onNavigate(section)}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300",
+              "flex items-center gap-2 px-4 py-2 rounded-full transition-all",
               currentSection === section
-                ? "bg-primary text-primary-foreground"
-                : "hover:bg-accent text-muted-foreground hover:text-accent-foreground"
+                ? "bg-white/30 text-white font-semibold backdrop-blur-lg shadow-inner"
+                : "text-white/70 hover:text-white hover:bg-white/20"
             )}
           >
             <Icon className="w-4 h-4" />
-            <span className="text-sm font-medium">{label}</span>
+            <span className="text-sm">{label}</span>
           </button>
         ))}
       </div>

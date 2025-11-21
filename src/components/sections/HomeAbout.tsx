@@ -1,50 +1,79 @@
+import { OffsetGallery } from "../OffsetGallery";
 import { Button } from "../ui/button";
+import { GlassIconCard } from "../IconCard";
+import { Feather } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
+
+const popup: Variants = {
+  hidden: { opacity: 0, scale: 0.85 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.34, 1.56, 0.64, 1] as const,
+    },
+  },
+};
 
 const HomeAbout = () => {
   return (
-    <section className="relative h-screen w-screen flex items-center justify-center bg-slate-blue overflow-hidden">
+    <section className="relative w-screen flex items-center justify-center overflow-hidden  animated-background h-screen bg-linear-to-r from-red-300 via-sky-200 to-blue-400">
       <div className="container mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
-        {/* Left side - Images */}
-        <div className="relative animate-fade-in">
-          <div className="grid grid-cols-2 gap-6">
-            {/* Top left image */}
-            <div className="aspect-square bg-ocean-blue/20 rounded-lg backdrop-blur-sm overflow-hidden hover:scale-105 transition-transform duration-500">
-              <div className="w-full h-full bg-gradient-to-br from-ocean-blue/30 to-transparent" />
-            </div>
-            
-            {/* Bottom left decorative */}
-            <div className="aspect-square bg-warm-beige/20 rounded-full backdrop-blur-sm flex items-center justify-center hover:rotate-12 transition-transform duration-500">
-              <svg viewBox="0 0 100 100" className="w-16 h-16">
-                <path d="M50 10 L60 40 L50 50 L40 40 Z" fill="hsl(var(--primary))" />
-                <path d="M50 50 L60 60 L50 90 L40 60 Z" fill="hsl(var(--primary))" />
-              </svg>
-            </div>
-            
-            {/* Center large image */}
-            <div className="col-span-2 aspect-[4/5] bg-teal/30 rounded-lg backdrop-blur-sm overflow-hidden hover:scale-105 transition-transform duration-500">
-              <div className="w-full h-full bg-gradient-to-br from-teal/40 to-ocean-blue/40" />
-            </div>
+        {/* ---------------- LEFT SIDE ---------------- */}
+        <motion.div
+          className="relative animate-fade-in"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }}
+          variants={popup}
+        >
+          <OffsetGallery
+            leftImageSrc="/image (1).png"
+            rightImageSrc="/image (1).jpeg"
+          />
+
+          <div className="absolute bottom-20 left-30">
+            <motion.div variants={popup}>
+              <GlassIconCard Icon={Feather} iconColor="text-white" />
+            </motion.div>
           </div>
-        </div>
-        
-        {/* Right side - Content */}
-        <div className="space-y-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <h2 className="text-5xl md:text-6xl font-bold text-foreground">
+        </motion.div>
+
+        {/* ---------------- RIGHT SIDE ---------------- */}
+        <motion.div
+          className="space-y-8 animate-fade-in"
+          style={{ animationDelay: "0.2s" }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.2 }}
+          variants={popup}
+        >
+          <h2 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent drop-shadow-2xl bg-linear-to-b from-black to-black/20">
             CREATIVITY WITH PURPOSE
           </h2>
-          
+
           <p className="text-lg text-foreground/80 leading-relaxed">
-            A well-built design doesn't happen by accident. It comes from clarity, intention, 
-            and design that actually understands what your audience cares about.
+            A well-built design doesn't happen by accident. It comes from
+            clarity, intention, and design that actually understands what your
+            audience cares about.
           </p>
-          
-          <Button 
-            size="lg"
-            className="bg-warm-beige text-foreground hover:bg-warm-sand transition-all duration-300 hover:scale-105 rounded-full px-8"
-          >
-            Turn ideas into <span className="font-bold ml-1">reality.</span>
-          </Button>
-        </div>
+
+          <motion.div variants={popup}>
+            <Button
+              size="lg"
+              className="
+                rounded-full px-8 text-foreground
+                bg-white/10 backdrop-blur-md border border-white/20
+                shadow-sm
+                transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+                hover:scale-110 hover:bg-white/20
+              "
+            >
+              Turn ideas into <span className="font-bold ml-1">reality.</span>
+            </Button>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

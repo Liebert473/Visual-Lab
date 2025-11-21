@@ -10,7 +10,7 @@ interface VideoBackgroundProps {
 const VideoBackground = ({
   // IMPORTANT: Replace this with your own hosted video URL (e.g., from AWS S3 or your web server)
   videoUrl = "/background.mp4",
-  posterUrl,
+  posterUrl = "/bg-poster.png",
   className,
 }: VideoBackgroundProps) => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
