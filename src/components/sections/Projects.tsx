@@ -13,33 +13,6 @@ const popup: Variants = {
 };
 
 const Projects = () => {
-  const projects = [
-    {
-      title: "POSTER",
-      subtitle: "JESKO ABSOLUT KOENIGSEGG",
-      category: "Poster Design",
-      gradient: "from-slate-800 to-slate-900",
-    },
-    {
-      title: "NEW PEAK",
-      subtitle: "Nike Running Shoes",
-      category: "Poster Design",
-      gradient: "from-teal to-ocean-blue",
-    },
-    {
-      title: "3D MODELED",
-      subtitle: "Wireless Earbuds",
-      category: "3D Modeling",
-      gradient: "from-slate-400 to-slate-600",
-    },
-    {
-      title: "3D MODELED",
-      subtitle: "Abstract Golden Forms",
-      category: "3D Art",
-      gradient: "from-yellow-600 to-yellow-800",
-    },
-  ];
-
   return (
     <section className="relative w-screen flex flex-col bg-slate-blue overflow-hidden animated-background h-screen bg-linear-to-r from-rose-300 via-teal-500 to-blue-600">
       <motion.div
