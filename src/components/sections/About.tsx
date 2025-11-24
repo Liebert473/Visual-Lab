@@ -57,8 +57,8 @@ const About = () => {
                 UT US
               </h2>
               <p className="text-lg text-foreground/80">
-                At GAC design agency, we explore the intersection of form,
-                function, and creativity.
+                At Visual Lab design agency, we explore the intersection of
+                form, function, and creativity.
               </p>
             </motion.div>
 
